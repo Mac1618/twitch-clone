@@ -1,14 +1,14 @@
 // shadcn components
 import { Button } from '@/components/ui/button';
 
-// Clerk 
+// Clerk
 import { UserButton } from '@clerk/nextjs';
 
 export default function Home() {
 	return (
-		<main className="">
-      <h1>For Authenticated user only!</h1>
-      <UserButton afterSignOutUrl='/' />
+		<main className="mt-20">
+			<h1>For Authenticated user only!</h1>
+			<UserButton afterSignOutUrl="/" />
 		</main>
 	);
 }

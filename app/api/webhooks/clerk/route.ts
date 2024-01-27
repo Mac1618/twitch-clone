@@ -75,16 +75,15 @@ export async function POST(req: Request) {
 	if (eventType === 'user.updated') {
 		// find the user id to update the user
 		await db.user.update({
-			where:{
+			where: {
 				externalUserId: payload.data.id,
 			},
-			data:{
+			data: {
 				username: payload.data.username,
 				imageUrl: payload.data.image_url,
-			}
-		})
+			},
+		});
 	}
-
 
 	// DELETE
 	if (eventType === 'user.deleted') {
@@ -93,7 +92,7 @@ export async function POST(req: Request) {
 			where: {
 				externalUserId: payload.data.id,
 			},
-		})
+		});
 	}
 
 	return new Response('', { status: 200 });
