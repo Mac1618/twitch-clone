@@ -9,6 +9,8 @@ import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
 // shadcn ui
 import { Button } from '@/components/ui/button';
 
+import { Hint } from '@/components/hint';
+
 export const Toggle = () => {
 	// destructuring the useSidebar elements
 	const { collapsed, onCollapsed, onExpand } = useSidebar((state) => state);
@@ -17,25 +19,26 @@ export const Toggle = () => {
 
 	return (
 		<>
-      {/* Collapsed sidebar */}
-			{ collapsed && (
-        <div className='hidden lg:flex justify-center items-center pt-4 mb-2'>
-          <Button
-            onClick={onExpand}
-            variant='ghost'
-            className='h-auto p-2'>
-            <ArrowRightFromLine className='h-4 w-4' />
-          </Button>
-        </div>
-      )}
+			{/* Collapsed sidebar */}
+			{collapsed && (
+				<div className="hidden lg:flex justify-center items-center pt-4 mb-2">
+					<Hint label={label} side='right' asChild>
+						<Button onClick={onExpand} variant="ghost" className="h-auto p-2">
+							<ArrowRightFromLine className="h-4 w-4" />
+						</Button>
+					</Hint>
+				</div>
+			)}
 
-      {/* Expanded sidebar */}
+			{/* Expanded sidebar */}
 			{!collapsed && (
 				<div className="flex items-center p-3 pl-6 mb-2 w-full">
 					<p>For you</p>
-					<Button onClick={onCollapsed} className=" h-auto ml-auto p-2" variant="ghost">
-						<ArrowLeftFromLine className="h-4 w-4" />
-					</Button>
+					<Hint label={label} side="right" asChild>
+						<Button onClick={onCollapsed} className=" h-auto ml-auto p-2" variant="ghost">
+							<ArrowLeftFromLine className="h-4 w-4" />
+						</Button>
+					</Hint>
 				</div>
 			)}
 		</>
