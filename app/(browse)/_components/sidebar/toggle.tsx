@@ -22,7 +22,7 @@ export const Toggle = () => {
 			{/* Collapsed sidebar */}
 			{collapsed && (
 				<div className="hidden lg:flex justify-center items-center pt-4 mb-2">
-					<Hint label={label} side='right' asChild>
+					<Hint label={label} side="right" asChild>
 						<Button onClick={onExpand} variant="ghost" className="h-auto p-2">
 							<ArrowRightFromLine className="h-4 w-4" />
 						</Button>
