@@ -47,7 +47,7 @@ export const Recommended = ({
   )
 }
 
-// Recommended Skeleton
+// Skeleton of Recommended component
 export const RecommendedSkeleton = () => {
   return(
     <ul className="px-2">
