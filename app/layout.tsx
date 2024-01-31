@@ -10,6 +10,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
+// Sonner Toast Component
+import { Toaster } from 'sonner';
+
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<body className={inter.className}>
 					<ThemeProvider attribute="class" forcedTheme="dark" storageKey="gamehub-theme">
 						{children}
+						<Toaster theme='light' position='bottom-center'/>
 					</ThemeProvider>
 				</body>
 			</html>
