@@ -8,6 +8,10 @@ import { SignInButton, UserButton, currentUser } from '@clerk/nextjs';
 
 // shadcn ui
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// custom avatar skeleton component
+import { UserAvatarSkeleton } from '@/components/user-avatar';
 
 export const Action = async () => {
 	const user = await currentUser();
@@ -33,6 +37,24 @@ export const Action = async () => {
 						</Link>
 					</Button>
 					<UserButton afterSignOutUrl="/" />
+				</div>
+			)}
+		</div>
+	);
+};
+
+// Skeleton for action component in navbar
+export const ActionSkeleton = async () => {
+	const user = await currentUser();
+	return (
+		<div className="flex justify-end items-center gap-x-2 ml-4 lg:ml-0">
+			{/* No logged in user */}
+			{!user && <Skeleton className="h-11 rounded-md px-8" />}
+			{/* User is logged in */}
+			{user && (
+				<div className="flex items-center gap-x-4">
+					<Skeleton className="h-11 rounded-md px-8" />
+					<UserAvatarSkeleton />
 				</div>
 			)}
 		</div>

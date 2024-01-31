@@ -11,16 +11,40 @@ datasource db {
 }
 
 
-// Model
+// User Model
 model User {
-  // User
-  id String @id @default(uuid())            // @id @default(uuid()) = primary key and auto generate when creating user
-  username String @unique                   // @unique = for uniqueness
-  imageUrl String @db.Text                  // @db.Text = longer String then usual
-  externalUserId String @unique
-  bio String? @db.Text                      // String? = optional string
+  id String @id @default(uuid())                // Unique identifier for each user
+  username String @unique                       // Unique username for each user
+  imageUrl String @db.Text                      // URL of the user's profile image
+  externalUserId String @unique                 // Clerk user's id
+  bio String? @db.Text                          // Optional biography of the user
+
+  // Relationship with other users
+  following Follow[] @relation("Following")     // List of users that this user is following
+  followedBy Follow[] @relation("FollowedBy")   // List of users that are following this user
 
   // Date created and updated
-  createdAt DateTime @default(now())        // @default(now()) = currrent date
-  updatedAt DateTime @updatedAt             // @updatedAt = updated date
+  createdAt DateTime @default(now())        // Date and time when the user was created
+  updatedAt DateTime @updatedAt             // Date and time when the user was last updated
+}
+
+
+// Follow Model
+model Follow {
+  id String @id @default(uuid())          // Unique identifier for each follow relationship
+  followerId String                       // Identifier of the follower user
+  followingId String                      // Identifier of the user being followed
+
+  // Relationship with users
+  follower User @relation(name: "Following", fields: [followerId], references: [id], onDelete: Cascade)                      // User who is following
+  following User @relation(name: "FollowedBy", fields: [followingId], references: [id], onDelete: Cascade)                      // User who is being followed
+
+  // Date and time when the follow relationship was created
+  createdAt DateTime @default(now())      // Date and time when the follow relationship was created
+  updatedAt DateTime @updatedAt           // Date and time when the follow relationship was last updated
+
+  // Ensure each follow relationship is unique and create indexes for faster querying
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
 }
