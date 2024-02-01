@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 // Skeletons components
 import { RecommendedSkeleton } from './recommended';
 import { ToggleSkeleton } from './toggle';
+import { FollowingSkeleton } from './following';
 
 // Wrapper props types
 interface WrapperProps {
@@ -28,6 +29,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
 		return (
 			<aside className="fixed left-0 h-full w-[70px] lg:w-60 flex flex-col bg-background border-r border-[#2D2E35 z-50]">
 				<ToggleSkeleton />
+				<FollowingSkeleton />
 				<RecommendedSkeleton />
 			</aside>
 		);

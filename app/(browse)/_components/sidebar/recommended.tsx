@@ -38,7 +38,7 @@ export const Recommended = ({
             < UserItem 
               key={user.id}
               username={user.username}
-              imagerUrl={user.imageUrl}
+              imageUrl={user.imageUrl}
               isLive={false}/>
           )}
         )}

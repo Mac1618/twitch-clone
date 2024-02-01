@@ -1,8 +1,32 @@
 // Databases
-import { getSelf } from './auth-service';
+import { getSelf } from './auth-service'; // this funtion returns an error if not logged in
 import { db } from './db';
 
-// Check if the user follow the other user
+// Get: get all the Followed Users
+export const getFollowedUsers = async () => {
+	try {
+		// Find the Logged in user
+		const user = await getSelf();
+
+		// Find the followed users
+		const followedUsers = await db.follow.findMany({
+			where: {
+				followerId: user.id,
+			},
+			include: {
+				following: true,
+			},
+		});
+
+		return followedUsers;
+
+		// return  error
+	} catch (error) {
+		return [];
+	}
+};
+
+// GET: if user is following return a boolean
 export const isFollowingUser = async (id: string) => {
 	try {
 		// get the logged in user
@@ -39,7 +63,7 @@ export const isFollowingUser = async (id: string) => {
 	}
 };
 
-// Follow a user
+// POST:  Follow a user
 export const followUser = async (id: string) => {
 	// Data of Logged in user
 	const user = await getSelf();
@@ -87,24 +111,24 @@ export const followUser = async (id: string) => {
 	return follow;
 };
 
-// Unfollow a user
+// DELETE: Unfollow a user
 export const unfollowUser = async (id: string) => {
 	// Logged in user Id
 	const user = await getSelf();
 
 	// selected user to unfollow
 	const otherUser = await db.user.findUnique({
-		where: { id: id }, 
-	})
+		where: { id: id },
+	});
 
 	// Check if the user exist
-	if(!otherUser) {
+	if (!otherUser) {
 		throw new Error('User not found');
 	}
 
 	// Check if the user and the seleted user id is the same
-	if(user.id === otherUser.id) {
-		throw new Error('You cannot unfollow yourself')
+	if (user.id === otherUser.id) {
+		throw new Error('You cannot unfollow yourself');
 	}
 
 	// Check if the user is already following the selected user
@@ -112,24 +136,24 @@ export const unfollowUser = async (id: string) => {
 		where: {
 			followerId: user.id,
 			followingId: otherUser.id,
-		}
-	})
+		},
+	});
 
 	// If still not following
-	if(!existingFollow) {
-			// User should follow the selected user before unfollowing
-		throw new Error('You are not yet following this user')
+	if (!existingFollow) {
+		// User should follow the selected user before unfollowing
+		throw new Error('You are not yet following this user');
 	}
 
 	// unfollow the selected user
 	const unfollow = await db.follow.delete({
 		where: {
-			id: existingFollow.id
+			id: existingFollow.id,
 		},
 		include: {
 			following: true,
-		}
-	})
+		},
+	});
 
 	return unfollow;
 };

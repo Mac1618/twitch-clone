@@ -18,13 +18,13 @@ import { LiveBadge } from "@/components/live-badge";
 
 interface userItemsProps {
   username: string;
-  imagerUrl: string;
+  imageUrl: string;
   isLive?: boolean;
 }
 
 export const UserItem = ({
   username: username,
-  imagerUrl: imagerUrl,
+  imageUrl: imageUrl,
   isLive: isLive
 }: userItemsProps) => {
 
@@ -56,7 +56,7 @@ export const UserItem = ({
         )}>
           {/* User Avatar component */}
           <UserAvatar
-            imageUrl={imagerUrl}
+            imageUrl={imageUrl}
             username={username}
             isLive={isLive}
             // showBadge
