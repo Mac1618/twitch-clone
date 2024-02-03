@@ -2,6 +2,7 @@
 import { notFound } from 'next/navigation';
 
 // Database connection
+import { isBlockedByUser } from '@/lib/block-service';
 import { isFollowingUser } from '@/lib/follow-service';
 import { getSelfByUsername } from '@/lib/user-service';
 
@@ -22,15 +23,22 @@ const UserPage = async ({ params: params }: UserPageProps) => {
 		notFound();
 	}
 
-	// return true or false if the user is followed by the logged in user
+	// Return a boolean if the user is being follwed or blocked
 	const isFollowing = await isFollowingUser(user.id);
+	const isBlocked = await isBlockedByUser(user.id);
+
+	// denie the logged in user to access the profile of user who blocked him
+	// if (isBlocked) {
+	// 	notFound();
+	// }
 
 	return (
 		<div className="flex flex-col space-y-4">
 			<h1>Username: {user.username}</h1>
 			<h1>User Id: {user.id}</h1>
 			<p>Is Following: {`${isFollowing}`}</p>
-			<Actions isFollowing={isFollowing} userId={user.id}/>
+			<p>Is Blocked by this user: {`${isBlocked}`}</p>
+			<Actions isFollowing={isFollowing} userId={user.id} />
 		</div>
 	);
 };

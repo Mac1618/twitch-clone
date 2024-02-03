@@ -5,6 +5,7 @@
 import { useTransition } from 'react';
 
 // server component
+import { onBlock, onUnblock } from '@/actions/block';
 import { onFollow, unFollow } from '@/actions/follow';
 
 // shadcn components
@@ -42,7 +43,7 @@ export const Actions = ({ isFollowing: isFollowing, userId: userId }: ActionProp
 		startTransition(() => {
 			unFollow(userId)
 				.then((data) => {
-					toast.success(`YOu have unfollowed ${data.following.username}`);
+					toast.success(`You have unfollowed ${data.following.username}`);
 				})
 				.catch(() => {
 					toast.error('Something went wrong');
@@ -58,9 +59,40 @@ export const Actions = ({ isFollowing: isFollowing, userId: userId }: ActionProp
 		}
 	};
 
+	// Handle block user
+	const handleBlock = () => {
+		startTransition(() => {
+			onBlock(userId)
+				.then((data) => {
+					toast.success(`Blocked the user ${data.blocked.username}`);
+				})
+				.catch(() => {
+					toast.error('Something went wrong');
+				});
+		});
+	};
+
+	// Handle unblock user
+	const handleUnblock = () => {
+		startTransition(() => {
+			onUnblock(userId)
+				.then((data) => {
+					toast.success(`Unblocked the user ${data.blocked.username}`)
+				})
+				.catch(() => {
+					toast.error('Something went wrong')
+				})
+		})
+	}
+
 	return (
-		<Button disabled={isPending} onClick={onClick} variant="primary">
-			{isFollowing ? 'Unfollow' : 'Follow'}
-		</Button>
+		<>
+			<Button disabled={isPending} onClick={onClick} variant="primary">
+				{isFollowing ? 'Unfollow' : 'Follow'}
+			</Button>
+			<Button disabled={isPending} onClick={handleUnblock}>
+				Unblock
+			</Button>
+		</>
 	);
 };

@@ -21,7 +21,7 @@ export const getRecommended = async () => {
 	let users = [];
 
 	// Retrieve all the users, excluding the current logged in user
-	if(userId){
+	if (userId) {
 		users = await db.user.findMany({
 			where: {
 				AND: [
@@ -29,25 +29,34 @@ export const getRecommended = async () => {
 						NOT: {
 							id: userId,
 						},
-					}, 
+					},
 					{
 						NOT: {
 							followedBy: {
 								some: {
 									followerId: userId,
-								}
-							}
-						}
-					}
-				]
+								},
+							},
+						},
+					},
+					{
+						NOT: {
+							blocking: {
+								some: {
+									blockedId: userId,
+								},
+							},
+						},
+					},
+				],
 			},
 			orderBy: {
 				createdAt: 'desc',
 			},
-		})
+		});
 
-	// retrieving all users, ordered by creation time in descending order if the user is logged out
-	}else{
+		// retrieving all users, ordered by creation time in descending order if the user is logged out
+	} else {
 		users = await db.user.findMany({
 			orderBy: { createdAt: 'desc' },
 		});

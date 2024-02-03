@@ -3,9 +3,10 @@
 // Next Router
 import { revalidatePath } from 'next/cache';
 
-// Service
+// Import Services
 import { blockUser, unblockUser } from '@/lib/block-service'; // Blocking a user
 
+// 
 export const onBlock = async (id: string) => {
 	//TODO: Adapt to disconnect from livestream
 	//TODO: Allow ability to kick a guest
