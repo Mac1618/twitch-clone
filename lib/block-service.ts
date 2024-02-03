@@ -140,3 +140,6 @@ export const unblockUser = async (id: string) => {
 
 	return unblock;
 };
+
+
+// Get all blocked user
