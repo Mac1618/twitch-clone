@@ -7,8 +7,8 @@ export const isBlockedByUser = async (id: string) => {
 		// Get the Logged in user
 		const self = await getSelf();
 
-		// if Block ID = Params ID
-		const otherUser = await db.block.findUnique({
+		// Find the blocked user
+		const otherUser = await db.user.findUnique({
 			where: {
 				id: id,
 			},
@@ -25,13 +25,13 @@ export const isBlockedByUser = async (id: string) => {
 		}
 
 		// Check if we are blocked
-      // "findUnique" is much faster the "findFirst"
+		// "findUnique" is much faster the "findFirst"
 		const existingBlock = await db.block.findUnique({
 			where: {
-        blockerId_blockedId:{
-          blockerId: otherUser.id,
-          blockedId: self.id,
-        }
+				blockerId_blockedId: {
+					blockerId: otherUser.id, // blocker
+					blockedId: self.id, // target user
+				},
 			},
 		});
 
@@ -42,4 +42,53 @@ export const isBlockedByUser = async (id: string) => {
 	} catch (error) {
 		return false;
 	}
+};
+
+// Blocking a user
+export const blockUser = async (id: string) => {
+	// Logged in user
+	const self = await getSelf();
+
+	// Check if self.id equals to target user (params id)
+	if (self.id === id) {
+		throw new Error('Cannot block yourself');
+	}
+
+	// Find the target user
+	const otherUser = await db.user.findUnique({
+		where: { id: id },
+	});
+
+	// if user exist
+	if (!otherUser) {
+		throw new Error('User not found');
+	}
+
+	// Check if the target user is already blocked
+	const existingBlock = await db.block.findUnique({
+		where: {
+			blockerId_blockedId: {
+				blockedId: otherUser.id, // target user
+				blockerId: self.id, // blocker
+			},
+		},
+	});
+
+	// if already blocked
+	if (existingBlock) {
+		throw new Error('Already blocked');
+	}
+
+	// block the target user
+	const block = await db.block.create({
+		data: {
+			blockerId: self.id, // blocker
+			blockedId: otherUser.id, // target user
+		},
+		include: {
+			blocked: true, // Include the data of blocked user
+		},
+	});
+
+	return block;
 };
