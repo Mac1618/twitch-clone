@@ -1,8 +1,9 @@
-// components
-import { Navbar } from '@/app/(browse)/_components/navbar';
+// dashboard components
+import { Navbar } from './_components/navbar';
 
 // Server components
 import { getUserByUsername } from '@/lib/auth-service';
+import { redirect } from 'next/navigation';
 
 // Creator Layout Props
 interface CreatorLayoutProps {
@@ -16,13 +17,18 @@ const CreatorLayout = async ({
 	children: children, // children
 }: CreatorLayoutProps) => {
 	// GET the Logged in user by passing username
-	const user = await getUserByUsername(params.username);
+	const self = await getUserByUsername(params.username);
+
+	// If no user found, redirect to home page
+	if (!self) {
+		redirect('/');
+	}
 
 	return (
-		<div>
-			<div className="h-10 flex justify-center items-center bg-red-400">Navbar</div>
-			{children}
-		</div>
+		<>
+      <Navbar />
+			<div className="pt-20 h-full flex ">{children}</div>
+		</>
 	);
 };
 
