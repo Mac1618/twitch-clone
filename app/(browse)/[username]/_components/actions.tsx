@@ -12,7 +12,6 @@ import { onFollow, unFollow } from '@/actions/follow';
 import { Button } from '@/components/ui/button';
 
 // Sonner Toast Component
-import { isAppBuiltinNotFoundPage } from 'next/dist/build/utils';
 import { toast } from 'sonner';
 
 interface ActionProps {
