@@ -1,5 +1,6 @@
 // dashboard components
 import { Navbar } from './_components/navbar';
+import { Sidebar } from './_components/sidebar';
 
 // Server components
 import { getUserByUsername } from '@/lib/auth-service';
@@ -16,6 +17,7 @@ const CreatorLayout = async ({
 	params: params, // params for server component
 	children: children, // children
 }: CreatorLayoutProps) => {
+
 	// GET the Logged in user by passing username
 	const self = await getUserByUsername(params.username);
 
@@ -27,7 +29,10 @@ const CreatorLayout = async ({
 	return (
 		<>
       <Navbar />
-			<div className="pt-20 h-full flex ">{children}</div>
+			<div className="pt-20 h-full flex ">
+				<Sidebar />
+				{children}
+			</div>
 		</>
 	);
 };
