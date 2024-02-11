@@ -1,10 +1,11 @@
-// dashboard components
-import { Navbar } from './_components/navbar';
-import { Sidebar } from './_components/sidebar';
-
 // Server components
 import { getUserByUsername } from '@/lib/auth-service';
 import { redirect } from 'next/navigation';
+
+// dashboard components
+import { Container } from './_components/container';
+import { Navbar } from './_components/navbar';
+import { Sidebar } from './_components/sidebar';
 
 // Creator Layout Props
 interface CreatorLayoutProps {
@@ -17,7 +18,6 @@ const CreatorLayout = async ({
 	params: params, // params for server component
 	children: children, // children
 }: CreatorLayoutProps) => {
-
 	// GET the Logged in user by passing username
 	const self = await getUserByUsername(params.username);
 
@@ -28,10 +28,10 @@ const CreatorLayout = async ({
 
 	return (
 		<>
-      <Navbar />
+			<Navbar />
 			<div className="pt-20 h-full flex ">
 				<Sidebar />
-				{children}
+				<Container>{children}</Container>
 			</div>
 		</>
 	);
