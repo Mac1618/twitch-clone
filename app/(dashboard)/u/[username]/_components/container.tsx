@@ -29,17 +29,20 @@ export const Container = ({ children: children }: ContainerProps) => {
 		if (matches) {
 			onCollapsed();
 
-		// on Lage device Expand the sidebar
+			// on Lage device Expand the sidebar
 		} else {
 			onExpand();
 		}
 	}, [matches, onCollapsed, onExpand]);
 
 	return (
-		<div className={cn(
-      'flex-1',
-      collapsed ? 'w-[70px]' : 'w-60'
-    )}>
+		<div
+			className={cn(
+				'flex-1',
+				// Padding for Creator Home page
+				collapsed ? 'ml-[70px]' : 'ml-[70px] lg:ml-60'
+			)}
+		>
 			{children}
 		</div>
 	);
