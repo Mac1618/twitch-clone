@@ -19,4 +19,4 @@ const browseLayout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default browseLayout;
+export default browseLayout; 

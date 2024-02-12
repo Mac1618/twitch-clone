@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextSearch"]
 }
 
 datasource db {
@@ -26,6 +27,9 @@ model User {
   // Block Model Relationship with User Model          
   blocking Block[] @relation("Blocking")       // List of users that blocked the user
   blockedBy Block[] @relation("BlockedBy")     // List of users that the user is blocking
+
+  // Stream Model Relationship with User Model 
+  stream Stream?
 
   // Date created and updated
   createdAt DateTime @default(now())        // Date and time when the user was created
@@ -67,4 +71,34 @@ model Block {
   @@unique([blockerId, blockedId])
   @@index([blockerId])
   @@index([blockedId])
+}
+
+// Stream Model
+model Stream {
+  id String @id @default(uuid())
+  name String @db.Text
+  thunailUrl String? @db.Text
+
+  // Use for connecting streaming software
+  ingressId String? @unique
+  serverUrl String? @db.Text
+  streamKey String? @db.Text
+
+  // Stream options defaults (enable chat, disable chat, etc.)
+  isLive Boolean @default(false)
+  isChatEnabled Boolean @default(true)
+  isChatDelayed Boolean @default(false)
+  isChatFowollersOnly Boolean @default(false)
+
+  // Connection to the user that owns the stream
+  userId String @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Date created and updated
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([ingressId])
+  // @@fulltext([name])
 }
