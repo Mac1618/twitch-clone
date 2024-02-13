@@ -12,7 +12,7 @@ datasource db {
 }
 
 
-// User Model
+// User Model  
 model User {
   id String @id @default(uuid())                // Unique identifier for each user
   username String @unique                       // Unique username for each user
@@ -77,7 +77,7 @@ model Block {
 model Stream {
   id String @id @default(uuid())
   name String @db.Text
-  thunailUrl String? @db.Text
+  thumbnailUrl String? @db.Text
 
   // Use for connecting streaming software
   ingressId String? @unique
